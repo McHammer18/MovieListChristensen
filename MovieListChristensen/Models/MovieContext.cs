@@ -10,6 +10,10 @@ namespace MovieListChristensen.Models
 
         public DbSet<Movie> Movies { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>().HasData(

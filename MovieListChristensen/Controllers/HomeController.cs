@@ -7,15 +7,21 @@ namespace MovieListChristensen.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private MovieContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MovieContext dbcontext)
         {
             _logger = logger;
+            context = dbcontext;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            var movies = context.Movies
+                .OrderBy(m => m.Name)
+                .ToList();
+            return View(movies);
         }
 
         public IActionResult Privacy()

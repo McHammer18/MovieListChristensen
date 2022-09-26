@@ -31,5 +31,11 @@ namespace MovieListChristensen.Controllers
         {
             return View();
         }
+
+        public IActionResult Display(string id)
+        {
+            int cnt = Convert.ToInt32(id);
+            return View(cnt);
+        }
     }
 }

@@ -18,15 +18,18 @@ namespace MovieListChristensen.Controllers
             return View();
         }
 
+        public IActionResult StaticContent(string num)
+        {
+            return Content($"Static Content: {num}");
+        }
+        [Route("/")]
+        public IActionResult IndexOverride()
+        {
+            return Content("Index Override!");
+        }
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

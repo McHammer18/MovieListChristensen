@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieListChristensen.Models
 {
-    public class MovieContext : DbContext
+    public class MovieContext : IdentityDbContext<User>
     {
         public MovieContext(DbContextOptions<MovieContext> options)
             : base(options)
@@ -54,6 +56,34 @@ namespace MovieListChristensen.Models
                     GenreId = "R"
                 }
             );
+        }
+
+        public static async Task CreateAdminUser(IServiceProvider serviceProvider)
+        {
+            using (var scoped = serviceProvider.CreateScope())
+            {
+                UserManager<User> userManager = scoped.ServiceProvider.GetRequiredService<UserManager<User>>();
+                RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                string username = "admin";
+                string pwd = "admin";
+                string roleName = "Admin";
+
+                if (await roleManager.FindByIdAsync(roleName) == null)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+                if (await userManager.FindByIdAsync(username) == null)
+                {
+                    User user = new User() { UserName = username };
+                    var result = await userManager.CreateAsync(user, pwd);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, roleName);
+                    }
+                }
+            }
+
         }
     }
 }

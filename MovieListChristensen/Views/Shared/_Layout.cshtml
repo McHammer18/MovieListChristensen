@@ -28,6 +28,32 @@
                     </ul>
                 </div>
             </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex jusstify-content-between">
+                <!-- Login Buttons and Links-->
+                @using Microsoft.AspNetCore.Identity
+                @using MovieListChristensen.Models;
+                @inject SignInManager<User> signInManager
+                <ul class="navbar-nav flex-grow-1">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-action="LogOut" asp-controller="Account" asp-area="">
+                                <input type="submit" value="Log Out" />
+                                <span class="text-light">@User.Identity.Name</span>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">&nbsp;Log In</a>
+                        </li>
+                    }
+                </ul>
+            </div>
         </nav>
     </header>
     <div class="container">
